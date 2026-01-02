@@ -5,7 +5,7 @@ import Contact from "../components/Contact";
 import PricingSingle from "../components/PricingSingle";
 import Pricing from "../components/Pricing";
 
-export default async function LandingPage({ params }: { params: { lang: Locale } }) {
+export default async function LandingPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params;
   const dict = dictionaries[lang];
 

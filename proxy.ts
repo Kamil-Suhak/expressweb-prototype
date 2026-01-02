@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 const locales = ['en', 'pl'];
 const defaultLocale = 'pl'; 
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // skip if the URL already has a locale

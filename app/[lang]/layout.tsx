@@ -11,7 +11,7 @@ export async function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'pl' }];
 }
 
-export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }>}): Promise<Metadata> {
   const { lang } = await params;
   const dict = dictionaries[lang];
 
@@ -28,7 +28,7 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
   const dict = dictionaries[lang];
