@@ -48,7 +48,7 @@ export const dictionaries = {
     contact: {
       title: "Contact Us Today",
       subtitle: "Need a plumber fast? Send us a message or call our emergency line.",
-      form: { name: "Your Name", email: "Email", message: "Describe the issue...", button: "Request Help" }
+      form: { name: "Your Name", email: "Email", message: "Describe the issue...", button: "Request Help", successTitle: "Thank You!", successMessage: "Your message has been sent. We will get back to you shortly." }
     },
     navLinks: [
       { label: "Services", href: "#services" },
@@ -100,7 +100,7 @@ export const dictionaries = {
     contact: {
       title: "Skontaktuj się z nami",
       subtitle: "Potrzebujesz hydraulika? Wyślij wiadomość lub zadzwoń na naszą linię alarmową.",
-      form: { name: "Imię i Nazwisko", email: "Adres Email", message: "Opisz problem...", button: "Poproś o pomoc" }
+      form: { name: "Imię i Nazwisko", email: "Adres Email", message: "Opisz problem...", button: "Poproś o pomoc", successTitle: "Dziękujemy!", successMessage: "Twoja wiadomość została wysłana. Wkrótce się z Tobą skontaktujemy." }
     },
     navLinks: [
       { label: "Usługi", href: "#services" },
