@@ -45,6 +45,9 @@ export const dictionaries = {
       { name: "Standard Callout", price: "$49", description: "Diagnosis and minor small repairs.", features: ["Expert Assessment", "Up to 30 mins labor", "Free Quote for larger work"], buttonText: "Book Visit" },
       { name: "Installation Package", price: "$199", description: "Perfect for new fixtures or appliances.", features: ["Full Installation", "Old Unit Removal", "Parts Included", "Cleanup & Disposal"], isPopular: true, buttonText: "Get Quote" },
     ],
+    review : {
+      title: "What our customers say:",
+    },
     contact: {
       title: "Contact Us Today",
       subtitle: "Need a plumber fast? Send us a message or call our emergency line.",
@@ -97,6 +100,9 @@ export const dictionaries = {
       { name: "Wizyta Standard", price: "150 zł", description: "Diagnoza i drobne naprawy na miejscu.", features: ["Ocena eksperta", "Do 30 min pracy", "Darmowa wycena większych prac"], buttonText: "Umów Wizytę" },
       { name: "Pakiet Montaż", price: "450 zł", description: "Idealny przy wymianie armatury lub sprzętu AGD.", features: ["Pełny montaż", "Demontaż starego sprzętu", "Utylizacja", "Gwarancja szczelności"], isPopular: true, buttonText: "Wybierz" },
     ],
+    review : {
+      title: "Co mówią nasi klienci:",
+    },
     contact: {
       title: "Skontaktuj się z nami",
       subtitle: "Potrzebujesz hydraulika? Wyślij wiadomość lub zadzwoń na naszą linię alarmową.",
@@ -127,7 +133,8 @@ export const GlobalConfig = {
     tagline: {
       en: "Your local plumbing experts, available 24/7.",
       pl: "Twoi lokalni eksperci, dostępni 24/7."
-    }
+    },
+    googlePlaceId: "ChIJIZu1VqdbFkcR0RezIbqNDLI"
   },
   socials: [
     { platform: "Facebook", url: "https://facebook.com/aquafix" },

@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 import { dictionaries, GlobalConfig, Locale } from "../site-config";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "../globals.css"; // Ensure this path is correct based on your folder move
+import "../globals.css";
 
-const inter = Inter({ subsets: ["latin", "latin-ext"] }); // Added latin-ext for Polish characters
+const inter = Inter({ subsets: ["latin", "latin-ext"] });
 
 export async function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'pl' }];
@@ -36,7 +36,6 @@ export default async function RootLayout({
   return (
     <html lang={lang} className="scroll-smooth">
       <body className={`${inter.className} antialiased`}>
-        {/* Pass the language-specific nav links and brand info */}
         <Navbar 
           links={dict.navLinks} 
           brandName={GlobalConfig.brand.name} 
