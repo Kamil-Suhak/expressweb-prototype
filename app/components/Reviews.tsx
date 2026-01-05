@@ -42,7 +42,7 @@ export default function Reviews({ review }: { review: ReviewsWrapper }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {reviews.slice(0, 3).map((review, i) => (
+          {reviews.slice(-3, -1).map((review, i) => (
             <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between">
               <div>
                 <Quote className="text-blue-100 mb-4" size={40} />

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
-import { sendEmail } from "@/app/actions/sendEmail"; // Import the action
+import { sendEmail } from "@/app/actions/sendEmail";
 
 interface ContactProps {
   content: {
