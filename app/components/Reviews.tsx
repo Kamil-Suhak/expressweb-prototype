@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Star, User, Quote } from 'lucide-react';
 import { getGoogleReviews } from '@/app/actions/getReviews';
+import Image from 'next/image';
 
 interface Review {
   author_name: string;
@@ -52,11 +53,15 @@ export default function Reviews({ review }: { review: ReviewsWrapper }) {
               </div>
               
               <div className="flex items-center gap-4 border-t pt-6">
-                <img 
-                  src={review.profile_photo_url} 
-                  alt={review.author_name} 
-                  className="w-12 h-12 rounded-full bg-gray-100"
-                />
+                <div className="relative w-12 h-12">
+                  <Image 
+                    src={review.profile_photo_url} 
+                    alt="" // decorative
+                    fill
+                    className="rounded-full object-cover bg-gray-100"
+                    sizes="48px"
+                  />
+                </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-sm">{review.author_name}</h3>
                   <p className="text-xs text-gray-400">{review.relative_time_description}</p>
