@@ -58,7 +58,7 @@ export default function Reviews({ review }: { review: ReviewsWrapper }) {
                   className="w-12 h-12 rounded-full bg-gray-100"
                 />
                 <div>
-                  <h4 className="font-bold text-gray-900 text-sm">{review.author_name}</h4>
+                  <h3 className="font-bold text-gray-900 text-sm">{review.author_name}</h3>
                   <p className="text-xs text-gray-400">{review.relative_time_description}</p>
                 </div>
               </div>

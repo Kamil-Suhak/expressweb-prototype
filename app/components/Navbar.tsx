@@ -71,7 +71,7 @@ export default function Navbar({ links, brandName, lang }: NavbarProps) {
             <Link href={togglePath} className="text-gray-600 text-xs font-bold uppercase">
               {lang === 'en' ? 'PL' : 'EN'}
             </Link>
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 p-2">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 p-2" aria-label='menu'>
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
