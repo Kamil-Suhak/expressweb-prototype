@@ -90,6 +90,7 @@ export const dictionaries = {
     review: {
       title: "What our customers say:",
       view_all: "View all reviews",
+      read_more: "Read more",
     },
     contact: {
       title: "Contact Us Today",
@@ -217,6 +218,7 @@ export const dictionaries = {
     review: {
       title: "Co mówią nasi klienci:",
       view_all: "Zobacz wszystkie opinie",
+      read_more: "Czytaj dalej",
     },
     contact: {
       title: "Skontaktuj się z nami",

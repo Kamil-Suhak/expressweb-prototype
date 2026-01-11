@@ -84,6 +84,7 @@ export default function Navbar({ links, brandName, lang }: NavbarProps) {
             <Link
               href={togglePath}
               className="text-xs font-bold text-gray-600 uppercase"
+              scroll={false}
             >
               {lang === "en" ? "PL" : "EN"}
             </Link>

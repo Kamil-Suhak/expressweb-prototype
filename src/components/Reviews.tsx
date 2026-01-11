@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Star, User, Quote } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { Star, Quote, X } from "lucide-react";
 import { getGoogleReviews } from "@/actions/getReviews";
 import Image from "next/image";
 import ButtonLink from "./ButtonLink";
@@ -18,11 +18,36 @@ interface Review {
 interface ReviewsWrapper {
   title: string;
   view_all: string;
+  read_more: string;
 }
 
-export default function Reviews({ review }: { review: ReviewsWrapper }) {
-  const view_all_url = `https://search.google.com/local/reviews?placeid=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID}`;
+export default function Reviews({
+  reviewWrapper,
+}: {
+  reviewWrapper: ReviewsWrapper;
+}) {
+  const [selectedReview, setSelectedReview] = useState<Review | null>(null);
 
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedReview(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  useEffect(() => {
+    if (selectedReview) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedReview]);
+
+  const view_all_url = `https://search.google.com/local/reviews?placeid=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID}`;
   const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
@@ -32,27 +57,40 @@ export default function Reviews({ review }: { review: ReviewsWrapper }) {
     }
     load();
   }, []);
+  console.log(reviews.length);
+
+  const scale = (fromRange: number[], toRange: number[]) => {
+    const d = (toRange[1] - toRange[0]) / (fromRange[1] - fromRange[0]);
+    return (from: number) => (from - fromRange[0]) * d + toRange[0];
+  };
+
+  const max = 130;
+  const weightScale = scale([0, max], [0, 0.99]);
+  const sortedReviews = useMemo(() => {
+    if (reviews.length === 0) return [];
+    return [...reviews]
+      .sort((a, b) => {
+        const scoreA = a.rating + weightScale(Math.min(max, a.text.length));
+        const scoreB = b.rating + weightScale(Math.min(max, b.text.length));
+
+        return scoreB - scoreA;
+      })
+      .slice(0, 3);
+  }, [reviews]);
 
   if (reviews.length === 0) return null;
-
-  const latestReviews = [...reviews]
-    .sort((a, b) => {
-      if (a.time && b.time) {
-        return b.time - a.time;
-      }
-      return 0;
-    })
-    .slice(0, 3);
 
   return (
     <section id="testimonials" className="scroll-mt-20 bg-gray-50 pt-20 pb-10">
       <div className="mx-auto max-w-7xl flex-col justify-between px-4">
         <div className="mb-16 text-center">
-          <h2 className="text-4xl font-bold text-gray-900">{review.title}</h2>
+          <h2 className="text-4xl font-bold text-gray-900">
+            {reviewWrapper.title}
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {latestReviews.slice(0, 3).map((review, i) => (
+          {sortedReviews.slice(0, 3).map((review, i) => (
             <div
               key={i}
               className={`flex flex-col justify-between rounded-3xl border border-gray-100 bg-white p-8 shadow-sm ${i > 1 ? "hidden md:flex" : "flex"}`}
@@ -66,12 +104,20 @@ export default function Reviews({ review }: { review: ReviewsWrapper }) {
                   ))}
                 </div>
               </div>
-              <p className="mb-6 leading-relaxed text-gray-600 italic">
+              <p className="mb-6 leading-relaxed text-gray-600 italic flex flex-col">
                 &quot;
-                {review.text.length > 150
-                  ? review.text.substring(0, 150) + "..."
+                {review.text.length > max
+                  ? review.text.substring(0, max) + "..."
                   : review.text}
                 &quot;
+                {review.text.length > max && (
+                  <button
+                    onClick={() => setSelectedReview(review)}
+                    className="not-italic text-right text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors focus:outline-none focus:underline"
+                  >
+                    {reviewWrapper.read_more}
+                  </button>
+                )}
               </p>
 
               <div className="flex items-center gap-4 border-t pt-6">
@@ -99,10 +145,70 @@ export default function Reviews({ review }: { review: ReviewsWrapper }) {
         {/* View all reviews button */}
         <div className="flex justify-center">
           <ButtonLink href={view_all_url} className="mt-10">
-            {review.view_all}
+            {reviewWrapper.view_all}
           </ButtonLink>
         </div>
       </div>
+
+      {/* Modal Overlay Logic */}
+      {selectedReview && (
+        <div
+          className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
+          onClick={() => setSelectedReview(null)} // Close when clicking the dark area
+        >
+          <div
+            className="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the white box
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedReview(null)}
+              className="absolute top-6 right-6  flex items-center justify-center rounded-xl hover:scale-[1.03] hover:bg-gray-100 transition-all"
+              aria-label="Close modal"
+            >
+              <X size={40} />
+            </button>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="relative h-12 w-12">
+                <Image
+                  src={selectedReview.profile_photo_url}
+                  alt="" // decorative
+                  fill
+                  className="rounded-full bg-gray-100 object-cover"
+                  sizes="48px"
+                />
+              </div>
+              <div className="flex flex-col">
+                <h3 className="font-bold text-xl text-gray-900 leading-tight">
+                  {selectedReview.author_name}
+                </h3>
+                <p className="text-xs text-gray-400 uppercase tracking-widest">
+                  {selectedReview.relative_time_description}
+                </p>
+              </div>
+
+              <div className="hidden md:flex gap-1 text-yellow-400 ml-4">
+                {[...Array(selectedReview.rating)].map((_, i) => (
+                  <Star key={i} fill="currentColor" size={30} />
+                ))}
+              </div>
+
+              <div className="md:hidden flex gap-1 text-yellow-400 ml-4">
+                <span className="text-3xl font-semibold text-black leading-none self-center">
+                  {selectedReview.rating}
+                </span>
+                <Star fill="currentColor" size={30} />
+              </div>
+            </div>
+
+            <div className="border-t border-gray-100 pt-6">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-lg">
+                {selectedReview.text}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

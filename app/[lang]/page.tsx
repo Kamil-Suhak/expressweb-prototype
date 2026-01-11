@@ -20,7 +20,7 @@ export default async function LandingPage({
       <ServicesGrid head={dict.servicesHead} items={dict.services} />
       <PricingSingle content={dict.pricing[1]} />
       {/* <Pricing plans={dict.pricing} title={dict.pricingHead.title} subtitle={dict.pricingHead.subtitle} /> */}
-      <Reviews review={dict.review} />
+      <Reviews reviewWrapper={dict.review} />
       <Contact content={dict.contact} brandInfo={GlobalConfig.brand} />
     </>
   );
