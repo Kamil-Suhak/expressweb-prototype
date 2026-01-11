@@ -1,13 +1,11 @@
 import { GlobalConfig, dictionaries } from "@/config/site-config";
 
 interface FooterProps {
-  content: typeof dictionaries.pl.navLinks;
   brand: typeof GlobalConfig.brand;
   socials: typeof GlobalConfig.socials;
-  lang: string;
 }
 
-export default function Footer({ content, brand, socials, lang }: FooterProps) {
+export default function Footer({ brand, socials }: FooterProps) {
   return (
     <footer className="border-t border-gray-100 bg-white pb-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -24,6 +24,13 @@ export async function generateMetadata({
     description: dict.seo.description,
     keywords: dict.seo.keywords,
     metadataBase: new URL(GlobalConfig.brand.url),
+    alternates: {
+      canonical: `${GlobalConfig.brand.url}/${lang}`,
+      languages: {
+        "en-US": `${GlobalConfig.brand.url}/en`,
+        "pl-PL": `${GlobalConfig.brand.url}/pl`,
+      },
+    },
   };
 }
 
@@ -45,15 +52,9 @@ export default async function RootLayout({
           brandName={GlobalConfig.brand.name}
           lang={lang}
         />
+        <main id="main-content">{children}</main>
 
-        {children}
-
-        <Footer
-          content={dict.navLinks}
-          brand={GlobalConfig.brand}
-          socials={GlobalConfig.socials}
-          lang={lang}
-        />
+        <Footer brand={GlobalConfig.brand} socials={GlobalConfig.socials} />
       </body>
     </html>
   );

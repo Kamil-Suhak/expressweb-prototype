@@ -1,12 +1,4 @@
-import {
-  Wrench,
-  Droplets,
-  Clock,
-  ShieldCheck,
-  MapPin,
-  PhoneCall,
-  CalendarCheck,
-} from "lucide-react";
+import { Wrench, Droplets, Clock, ShieldCheck, MapPin } from "lucide-react";
 
 export const dictionaries = {
   en: {
@@ -149,7 +141,7 @@ export const dictionaries = {
       ],
     },
     hero: {
-      title: "Profesjonalne Usługi Hydrauliczne, Którym Możesz Ufać.",
+      title: "Profesjonalne Usługi Hydrauliczne, Którym Możesz [[Ufać]].",
       subtitle:
         "Od cieknących kranów po pęknięte rury – zapewniamy szybkie i solidne rozwiązania dla Twojego domu i firmy.",
       primaryCTA: "Zadzwoń Teraz",
@@ -273,7 +265,7 @@ export const GlobalConfig = {
     email: "biuro@aquafix.pl",
     address: "ul. Hydraulików 12, Kraków",
     phone: "+48 500 600 700",
-    url: "https://aquafix-krakow.pl",
+    url: "https://expressweb-prototype.vercel.app",
     tagline: {
       en: "Your local plumbing experts, available 24/7.",
       pl: "Twoi lokalni eksperci, dostępni 24/7.",

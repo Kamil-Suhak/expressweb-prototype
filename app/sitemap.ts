@@ -3,7 +3,13 @@ import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://expressweb-prototype.vercel.app",
+      url: "https://expressweb-prototype.vercel.app/pl",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: "https://expressweb-prototype.vercel.app/en",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
