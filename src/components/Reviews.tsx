@@ -56,7 +56,7 @@ export default function Reviews({
     }
   }, [selectedReview]);
 
-  const view_all_url = `https://search.google.com/local/reviews?placeid=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID}`;
+  const view_all_url = `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID}`;
 
   const scale = (fromRange: number[], toRange: number[]) => {
     const d = (toRange[1] - toRange[0]) / (fromRange[1] - fromRange[0]);
