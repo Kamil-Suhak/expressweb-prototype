@@ -1,4 +1,4 @@
-import { GlobalConfig, dictionaries } from "../site-config";
+import { GlobalConfig, dictionaries } from "@/config/site-config";
 
 interface FooterProps {
   content: typeof dictionaries.pl.navLinks;
@@ -9,8 +9,8 @@ interface FooterProps {
 
 export default function Footer({ content, brand, socials, lang }: FooterProps) {
   return (
-    <footer className="bg-white border-t border-gray-100 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="border-t border-gray-100 bg-white pb-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/*<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-12">
           
           Brand Column
@@ -35,13 +35,17 @@ export default function Footer({ content, brand, socials, lang }: FooterProps) {
           ))}
         </div> */}
 
-        <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-100 pt-8 md:flex-row">
           <p className="text-sm text-gray-400">
             © {new Date().getFullYear()} {brand.name}.
           </p>
           <div className="flex gap-6">
             {socials.map((social, i) => (
-              <a key={i} href={social.url} className="text-sm text-gray-400 hover:text-gray-900 transition">
+              <a
+                key={i}
+                href={social.url}
+                className="text-sm text-gray-400 transition hover:text-gray-900"
+              >
                 {social.platform}
               </a>
             ))}

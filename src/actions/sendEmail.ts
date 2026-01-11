@@ -1,7 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
-import { GlobalConfig } from "../site-config";
+// import { GlobalConfig } from "../config/site-config";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -12,8 +12,8 @@ export async function sendEmail(formData: FormData) {
 
   try {
     const data = await resend.emails.send({
-      from: "Leads <onboarding@resend.dev>", // Once you verify a domain, use info@yourdomain.com
-    //   to: [GlobalConfig.brand.email],
+      from: "Leads <onboarding@resend.dev>",
+      //   to: [GlobalConfig.brand.email],
       to: ["kamilsuhak@gmail.com"],
       subject: `New Lead from ${name}`,
       replyTo: email,

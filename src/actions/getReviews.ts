@@ -1,9 +1,9 @@
 "use server";
-import { GlobalConfig } from "../site-config";
+import { GlobalConfig } from "../config/site-config";
 
 export async function getGoogleReviews() {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-  const placeId = GlobalConfig.brand.googlePlaceId;
+  const placeId = process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID;
   const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`;
 
   try {
