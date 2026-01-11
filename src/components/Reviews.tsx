@@ -1,19 +1,10 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { Star, Quote, X } from "lucide-react";
-import { getGoogleReviews } from "@/actions/getReviews";
+import type { GoogleReview } from "@/actions/getReviews";
 import Image from "next/image";
 import ButtonLink from "./ButtonLink";
-
-interface Review {
-  author_name: string;
-  rating: number;
-  text: string;
-  relative_time_description: string;
-  profile_photo_url: string;
-  time: number;
-}
 
 interface ReviewsWrapper {
   title: string;
@@ -23,10 +14,16 @@ interface ReviewsWrapper {
 
 export default function Reviews({
   reviewWrapper,
+  reviews,
 }: {
   reviewWrapper: ReviewsWrapper;
+  reviews: GoogleReview[];
 }) {
-  const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+  const [selectedReview, setSelectedReview] = useState<GoogleReview | null>(
+    null
+  );
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const prevFocused = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -40,24 +37,26 @@ export default function Reviews({
     if (selectedReview) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "auto";
     };
   }, [selectedReview]);
 
-  const view_all_url = `https://search.google.com/local/reviews?placeid=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID}`;
-  const [reviews, setReviews] = useState<Review[]>([]);
-
+  // Manage focus when modal opens/closes
   useEffect(() => {
-    async function load() {
-      const data = await getGoogleReviews();
-      setReviews(data);
+    if (selectedReview) {
+      prevFocused.current = document.activeElement as HTMLElement | null;
+      // focus the close button on next tick
+      setTimeout(() => closeButtonRef.current?.focus(), 0);
+    } else {
+      prevFocused.current?.focus?.();
+      prevFocused.current = null;
     }
-    load();
-  }, []);
-  console.log(reviews.length);
+  }, [selectedReview]);
+
+  const view_all_url = `https://search.google.com/local/reviews?placeid=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID}`;
 
   const scale = (fromRange: number[], toRange: number[]) => {
     const d = (toRange[1] - toRange[0]) / (fromRange[1] - fromRange[0]);
@@ -67,7 +66,7 @@ export default function Reviews({
   const max = 130;
   const weightScale = scale([0, max], [0, 0.99]);
   const sortedReviews = useMemo(() => {
-    if (reviews.length === 0) return [];
+    if (!reviews || reviews.length === 0) return [];
     return [...reviews]
       .sort((a, b) => {
         const scoreA = a.rating + weightScale(Math.min(max, a.text.length));
@@ -78,7 +77,7 @@ export default function Reviews({
       .slice(0, 3);
   }, [reviews]);
 
-  if (reviews.length === 0) return null;
+  if (!reviews || reviews.length === 0) return null;
 
   return (
     <section id="testimonials" className="scroll-mt-20 bg-gray-50 pt-20 pb-10">
@@ -90,17 +89,17 @@ export default function Reviews({
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {sortedReviews.slice(0, 3).map((review, i) => (
+          {sortedReviews.map((review, i) => (
             <div
-              key={i}
+              key={review.time ?? `${review.author_name}-${i}`}
               className={`flex flex-col justify-between rounded-3xl border border-gray-100 bg-white p-8 shadow-sm ${i > 1 ? "hidden md:flex" : "flex"}`}
             >
               <div className="flex w-full items-start justify-between">
                 <Quote className="mb-4 text-blue-100" size={40} />
 
                 <div className="mt-4 flex gap-1 text-yellow-400">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} fill="currentColor" size={20} />
+                  {[...Array(Math.max(0, review.rating || 0))].map((_, j) => (
+                    <Star key={j} fill="currentColor" size={20} />
                   ))}
                 </div>
               </div>
@@ -162,6 +161,7 @@ export default function Reviews({
           >
             {/* Close Button */}
             <button
+              ref={closeButtonRef}
               onClick={() => setSelectedReview(null)}
               className="absolute top-6 right-6  flex items-center justify-center rounded-xl hover:scale-[1.03] hover:bg-gray-100 transition-all"
               aria-label="Close modal"
@@ -188,12 +188,14 @@ export default function Reviews({
               </div>
 
               <div className="hidden md:flex gap-1 text-yellow-400 ml-4">
-                {[...Array(selectedReview.rating)].map((_, i) => (
-                  <Star key={i} fill="currentColor" size={30} />
-                ))}
+                {[...Array(Math.max(0, selectedReview.rating || 0))].map(
+                  (_, k) => (
+                    <Star key={k} fill="currentColor" size={30} />
+                  )
+                )}
               </div>
 
-              <div className="md:hidden flex gap-1 text-yellow-400 ml-4">
+              <div className="md:hidden flex gap-1 text-yellow-400">
                 <span className="text-3xl font-semibold text-black leading-none self-center">
                   {selectedReview.rating}
                 </span>
