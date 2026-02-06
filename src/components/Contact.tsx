@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { sendEmail } from "@/actions/sendEmail";
+import StatusModal from "@/components/StatusModal";
+import { getSystemErrorName } from "util";
 
 interface ContactProps {
   content: {
@@ -14,6 +16,9 @@ interface ContactProps {
       button: string;
       successTitle: string;
       successMessage: string;
+      errorTitle: string;
+      errorMessage: string;
+      buttonClose: string;
     };
   };
   brandInfo: { email: string; phone: string; address: string };
@@ -23,6 +28,10 @@ export default function Contact({ content, brandInfo }: ContactProps) {
   const [isPending, setIsPending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const [errorModal, setErrorModal] = useState({
+    isOpen: false,
+  });
+
   async function handleSubmit(formData: FormData) {
     setIsPending(true);
     const result = await sendEmail(formData);
@@ -30,14 +39,24 @@ export default function Contact({ content, brandInfo }: ContactProps) {
 
     if (result.success) {
       setIsSuccess(true);
-      // Optional: Reset form here
     } else {
-      alert("Something went wrong. Please try calling us instead!");
+      setErrorModal({
+        isOpen: true,
+      });
     }
   }
 
   return (
     <section id="contact" className="scroll-mt-20 bg-gray-50 py-24">
+      <StatusModal
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal((prev) => ({ ...prev, isOpen: false }))}
+        title={content.form.errorTitle}
+        message={content.form.errorMessage}
+        type="error"
+        closeButtonText={content.form.buttonClose}
+      />
+
       <div className="mx-auto grid max-w-7xl gap-16 px-4 lg:grid-cols-2">
         <div>
           <h2 className="mb-6 text-4xl font-bold">{content.title}</h2>

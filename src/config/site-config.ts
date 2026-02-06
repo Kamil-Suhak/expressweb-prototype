@@ -144,6 +144,9 @@ export const dictionaries = {
         successTitle: "Thank You!",
         successMessage:
           "Your message has been sent. We will get back to you shortly.",
+        errorTitle: "Error Sending Message",
+        errorMessage: "Something went wrong. Please try calling us directly.",
+        buttonClose: "Close",
       },
     },
     navLinks: [
@@ -177,7 +180,7 @@ export const dictionaries = {
       ],
     },
     hero: {
-      title: "Pogotwie Hydrauliczne&[[K.M. Post]]",
+      title: "Pogotowie Hydrauliczne&[[K.M. Post]]",
       subtitle:
         "Od cieknących kranów po kompleksowe remonty – zapewniamy szybkie i solidne rozwiązania dla Twojego domu i firmy.",
       primaryCTA: "Zadzwoń Teraz",
@@ -305,6 +308,10 @@ export const dictionaries = {
         successTitle: "Dziękujemy!",
         successMessage:
           "Twoja wiadomość została wysłana. Wkrótce się z Tobą skontaktujemy.",
+        errorTitle: "Błąd wysyłania wiadomości",
+        errorMessage:
+          "Coś poszło nie tak. Prosimy o zadzwonienie do nas bezpośrednio.",
+        buttonClose: "Zamknij",
       },
     },
     navLinks: [
