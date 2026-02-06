@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ExpressWeb
+Szablon do prostego wykonania estetycznej, szybkiej i nowoczesnej strony internetowej dla małych firm w dwóch językach
 
-## Getting Started
+## Główne funkcje
+- Szybkie dostosowywanie treści strony z centralnego pliku - bez szukania konkretnego fragmentu tekstu w kodzie
+- Modularny system elementów strony i ich wariacji wykorzystujący Components Next.js
+- Responsywność i szybkość na każdym urządzeniu
 
-First, run the development server:
+## Wygląd strony
+ExpressWeb domyślnie zapewnia proste, ale wyglądające profesjonalnie animacje, które sprawiają użytkownikowi dobre wrażenie bez rozpraszania go. Główne kolory strony mogą być łatwo zmienione w pliku xxx.css, który działa na przestrzeni całej strony. Układ strony jest podzielony na sekcje, z których część posiada alternatywne warianty np. cennik może przedstawiać 3 opcje cenowe, z których jedna jest wyróżniona lub 1 główną z inną oprawą graficzną. Strona jest zaprojektowana z myślą o użytkownikach korzystających z telefonów komórkowych, ponieważ znaczna część ruchu internetowego odbywa się właśnie przez te urządzenia. Wyświetlanie na telefonie automatycznie dostosowuje rozmiar elementów, aby żaden nie był trudny do przeczytania. Liczba opinii pobranych z Google zmienia się z 3 wyświetlanych na komputerach do 2. W dodatku do opcji zmienienia języka przez ładowania strony ponownie, ExpressWeb wykrywa język, w którym jest wyświetlana przeglądarka użytkownika oraz automatycznie ustawia odpowiedni język, jeżeli jest dostępny (angielski bądź polski). W przeciwnym wypadku, domyślnie ustawiany jest język angielski.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Optymalizacja i SEO
+Według Google PageSpeed Insights (PSI) - narzędzia do testowania szybkości, dostępności stron dla osób niepełnosprawnych oraz optymalizacji pod wyszukiwarki, ExpressWeb osiąga wyniki w wysokich 90. Wynika to między innymi z:
+- Używaniu atrybutów aria-label na odpowiednich elementach
+- Serwowanie zdjęć w nowoczesnym, skompresowanym formacie .webp zamiast tradycyjnych .png, .jpg
+- Dynamicznie generowanych metadanych, mapy strony (sitemap.ts) oraz pliku robots (robots.ts)
+PSI testuje szybkość ładowania strony na telefonach symulując starszy, zwolniony procesor oraz wolne połączenie internetowe 4G. Wynik ponad 90 oznacza, że nawet na takich urządzeniach ExpresWeb ładuje się błyskawicznie, nie przeszkadzając UX.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Next.js
+Biblioteka/framework Next.js zbudowany na React jest idealny pod projekt ExpressWeb ze względu na prostotę tworzenia dynamicznych komponentów, wiele wbudowanych funkcji usprawniających szybkość statycznych stron oraz łatwą integrację z różnymi API oraz platformą Vercel, która pozwala na błyskawiczny development cycle. Komeda git push origin jest wykrywana przez platformę, która natychmiast uruchamia nowy build strony.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Integracja z Google Places API
+ExpressWeb posiada komponent Reviews.tsx, który wykorzystuję Google Places API, aby automatycznie pobierać opinie Google z wizytówki firmy. Surowe dane JSON otrzymane z api są następnie ekstraktowane do interfejsu zawierającego kluczowe elementy opinii dla implementacji w projekcie (treść, ocena, nazwa i zdjęcie autora, relative_time_description - string w postaci "x dni/miesięcy/lat temu"). Opinie są algorytmicznie sortowane - wyższy priorytet otrzymują dłuższe oraz wyższe opinie. Ponadto, aby:
+- zapobiec nadużyciu płatnych API calls
+- usprawnić każde kolejne ładowanie strony po pierwszym
+- nie wykonywać nadmiernej ilości requestów HTTP
+ExpressWeb wykorzystuje cache przeglądarki użytkownika i zapisuje pobrane opinie na 24h, po czym na życzenie użytkownika pobierane są nowe.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Integracja z Resend
+Projekt ExpressWeb zawiera komponent Contact.tsx, który pozwala na kontakt z firmą bez opuszczania strony w postaci formularza, który wysyła maila na adres podany przez firmę. Platforma Resend pozwala na przegląd wysłanych przez użytkowników maili oraz inne analityki. Potencjalną opcją na przyszłość jest implementacja systemu listy mailingowej, który wykorzystując opcję cyklicznego wywoływania funkcji platformy Vercel, wysyłałby np. miesięczne maile promocyjne do klientów zapisanych na listę.
 
-## Learn More
+## Uruchamianie
+Do pełnej funkcjonalności projektu wymagane są klucze API Google Places oraz Resend jak i Google Places ID firmy. Należy sklonować repozytorium do lokalnego foldera oraz uruchomić komendę `pnpm dev`. Na lokalnej maszynie wymagane są Node.js, Next.js, Tailwind oraz biblioteki przez nie wymagane.
 
-To learn more about Next.js, take a look at the following resources:
+Alternatywnie, przykładowa demonstracja dostępna jest pod adresem expressweb-prototype.vercel.app
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Roadmap
+Do implementacji pozostaje:
+- więcej wariantów komponentów
+- bardziej elastyczny system dostosowywania wyglądu strony
+- różne gotowe pliki konfiguracyjne przeznaczone do szybkiej demonstracji różnych opcji strony
+- więcej interaktywnych elemetów takich jak Contact.tsx
+- dodanie funkcjonalności do przycisku Book Now - integracja z kalendarzem Google, dedykowanym arkuszem Google Sheets bądź innym podobnym serwisem
