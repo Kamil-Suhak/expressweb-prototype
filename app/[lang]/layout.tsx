@@ -48,6 +48,7 @@ export default async function RootLayout({
     <html lang={lang} className="scroll-smooth">
       <body className={`${inter.className} antialiased`}>
         <Navbar
+          cta={dict.hero.primaryCTA}
           links={dict.navLinks}
           brandName={GlobalConfig.brand.name}
           lang={lang}

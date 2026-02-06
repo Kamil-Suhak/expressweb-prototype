@@ -1,18 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { GlobalConfig } from "@/config/site-config";
 
 interface NavbarProps {
   links: { label: string; href: string }[];
+  cta: string;
   brandName: string;
   lang: string;
 }
 
-export default function Navbar({ links, brandName, lang }: NavbarProps) {
+export default function Navbar({ links, brandName, lang, cta }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -20,9 +22,10 @@ export default function Navbar({ links, brandName, lang }: NavbarProps) {
   // Detect scroll to change styling
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll(); // Initial check
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lang]);
 
   // Logic to switch language
   const togglePath = pathname.startsWith("/pl")
@@ -72,10 +75,12 @@ export default function Navbar({ links, brandName, lang }: NavbarProps) {
             </Link>
 
             <a
-              href="#contact"
-              className="rounded-full bg-blue-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-blue-100 transition hover:bg-blue-700"
+              href={`tel:${GlobalConfig.brand.phone}`}
+              // className="rounded-full bg-blue-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-blue-100 transition hover:bg-blue-700"
+              className="flex transform items-center justify-center gap-2 rounded-full px-5 py-2 bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-100 transition hover:bg-blue-700"
             >
-              {lang === "en" ? "Get Started" : "Zacznij"}
+              <Phone size={16} />
+              {cta}
             </a>
           </div>
 

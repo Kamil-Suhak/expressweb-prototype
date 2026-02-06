@@ -1,5 +1,5 @@
 import { GlobalConfig } from "@/config/site-config";
-import { Phone, Calendar, LucideIcon } from "lucide-react";
+import { Phone, Mail, LucideIcon } from "lucide-react";
 import { FormattedText } from "@/components/FormattedText";
 
 interface HeroProps {
@@ -8,7 +8,6 @@ interface HeroProps {
     subtitle: string;
     primaryCTA: string;
     secondaryCTA: string;
-    // New addition for localized trust badges
     trustBadges: { label: string; icon: LucideIcon }[];
   };
 }
@@ -42,6 +41,7 @@ export default function Hero({ content }: HeroProps) {
 
         <h1 className="mx-auto mb-6 max-w-4xl text-4xl font-extrabold tracking-tight text-gray-900 md:text-6xl">
           <FormattedText text={content.title} />
+          {/* {content.title} */}
         </h1>
 
         <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-600 md:text-xl">
@@ -58,10 +58,10 @@ export default function Hero({ content }: HeroProps) {
             {content.primaryCTA}
           </a>
           <a
-            href="#contact"
+            href={`mailto:${GlobalConfig.brand.email}`}
             className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-8 py-4 font-bold text-gray-900 transition hover:bg-gray-50"
           >
-            <Calendar size={20} />
+            <Mail size={20} />
             {content.secondaryCTA}
           </a>
         </div>

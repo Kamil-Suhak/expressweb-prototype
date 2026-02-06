@@ -80,7 +80,7 @@ export default function Reviews({
   if (!reviews || reviews.length === 0) return null;
 
   return (
-    <section id="testimonials" className="scroll-mt-20 bg-gray-50 pt-20 pb-10">
+    <section id="reviews" className="scroll-mt-20 bg-gray-50 pt-20 pb-10">
       <div className="mx-auto max-w-7xl flex-col justify-between px-4">
         <div className="mb-16 text-center">
           <h2 className="text-4xl font-bold text-gray-900">

@@ -37,7 +37,7 @@ export default function Contact({ content, brandInfo }: ContactProps) {
   }
 
   return (
-    <section id="contact" className="scroll-mt-20 bg-white py-24">
+    <section id="contact" className="scroll-mt-20 bg-gray-50 py-24">
       <div className="mx-auto grid max-w-7xl gap-16 px-4 lg:grid-cols-2">
         <div>
           <h2 className="mb-6 text-4xl font-bold">{content.title}</h2>
@@ -92,10 +92,15 @@ export default function Contact({ content, brandInfo }: ContactProps) {
               />
               <button
                 disabled={isPending}
-                className={`flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-4 font-bold text-white transition ${isPending ? "cursor-not-allowed opacity-50" : "hover:bg-blue-700"}`}
+                className={`group flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-4 font-bold text-white transition ${isPending ? "cursor-not-allowed opacity-50" : "hover:bg-blue-700"}`}
               >
                 {isPending ? "Sending..." : content.form.button}
-                {!isPending && <Send size={18} />}
+                {!isPending && (
+                  <Send
+                    size={18}
+                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+                  />
+                )}
               </button>
             </form>
           )}

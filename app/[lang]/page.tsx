@@ -5,7 +5,9 @@ import Contact from "@/components/Contact";
 import PricingSingle from "@/components/PricingSingle";
 import Pricing from "@/components/Pricing";
 import Reviews from "@/components/Reviews";
+import Gallery from "@/components/Gallery";
 import { getGoogleReviews } from "@/actions/getReviews";
+import Faq from "@/components/Faq";
 
 export default async function LandingPage({
   params,
@@ -20,9 +22,11 @@ export default async function LandingPage({
     <>
       <Hero content={dict.hero} />
       <ServicesGrid head={dict.servicesHead} items={dict.services} />
-      <PricingSingle content={dict.pricing[1]} />
+      <Gallery content={dict.gallery} lang={lang} />
+      {/* <PricingSingle content={dict.pricing[1]} /> */}
       {/* <Pricing plans={dict.pricing} title={dict.pricingHead.title} subtitle={dict.pricingHead.subtitle} /> */}
       <Reviews reviewWrapper={dict.review} reviews={reviews} />
+      <Faq content={dict.faq} />
       <Contact content={dict.contact} brandInfo={GlobalConfig.brand} />
     </>
   );
