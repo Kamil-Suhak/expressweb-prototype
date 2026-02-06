@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GlobalConfig } from "@/config/site-config";
+import { useActiveSection } from "@/hooks/useActiveSelection";
 
 interface NavbarProps {
   links: { label: string; href: string }[];
@@ -26,6 +27,11 @@ export default function Navbar({ links, brandName, lang, cta }: NavbarProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lang]);
+
+  const sectionIds = links
+    .map((link) => link.href.replace("#", ""))
+    .concat("hero"); // Add hero section but don't include it in the nav links
+  const activeSection = useActiveSection(sectionIds);
 
   // Logic to switch language
   const togglePath = pathname.startsWith("/pl")
@@ -54,15 +60,22 @@ export default function Navbar({ links, brandName, lang, cta }: NavbarProps) {
 
           {/* DESKTOP NAV */}
           <div className="hidden items-center gap-8 md:flex">
-            {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-sm font-medium text-gray-600 transition hover:text-blue-600"
-              >
-                {link.label}
-              </a>
-            ))}
+            {links.map((link) => {
+              const isActive = activeSection === link.href.replace("#", "");
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className={`text-sm font-medium transition-all duration-300 ease-in-out ${
+                    isActive
+                      ? "text-blue-600 underline underline-offset-4"
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
 
             {/* Language Switcher Button */}
             <Link

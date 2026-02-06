@@ -14,7 +14,10 @@ interface HeroProps {
 
 export default function Hero({ content }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-white pt-32 pb-20 lg:pt-48">
+    <section
+      className="relative overflow-hidden bg-white pt-32 pb-20 lg:pt-48"
+      id="hero"
+    >
       {/* BACKGROUND PATTERN */}
       <div
         className="absolute inset-0 z-0 opacity-[0.03]"
