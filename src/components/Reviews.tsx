@@ -20,37 +20,40 @@ export default function Reviews({
   reviews: GoogleReview[];
 }) {
   const [selectedReview, setSelectedReview] = useState<GoogleReview | null>(
-    null
+    null,
   );
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const prevFocused = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedReview(null);
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, []);
+    // If modal is closed, do nothing
+    if (!selectedReview) return;
 
-  useEffect(() => {
-    if (selectedReview) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    // Lock Body & Add Listener
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedReview(null);
+      if (e.key === "Tab") e.preventDefault();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Unlock Body & Remove Listener
     return () => {
       document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedReview]);
 
-  // Manage focus when modal opens/closes
+  // Focus Management
   useEffect(() => {
     if (selectedReview) {
+      // Save the element that was focused before opening
       prevFocused.current = document.activeElement as HTMLElement | null;
-      // focus the close button on next tick
+      // Move focus to close button
       setTimeout(() => closeButtonRef.current?.focus(), 0);
     } else {
+      // Restore focus when closing
       prevFocused.current?.focus?.();
       prevFocused.current = null;
     }
@@ -191,7 +194,7 @@ export default function Reviews({
                 {[...Array(Math.max(0, selectedReview.rating || 0))].map(
                   (_, k) => (
                     <Star key={k} fill="currentColor" size={30} />
-                  )
+                  ),
                 )}
               </div>
 

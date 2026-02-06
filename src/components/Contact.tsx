@@ -27,7 +27,6 @@ interface ContactProps {
 export default function Contact({ content, brandInfo }: ContactProps) {
   const [isPending, setIsPending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-
   const [errorModal, setErrorModal] = useState({
     isOpen: false,
   });
